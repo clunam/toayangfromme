@@ -32,7 +32,7 @@ To run the project locally:
 3. Open `index.html` in your browser.
 
 ## Usage
-Click on the jar to reveal different love notes. Each note is randomly picked from predefined messages based on different emotions. The more notes you open, the more milestones you unlock,
+Click on the jar to reveal different love notes. Each note is randomly picked from predefined messages based on different emotions. The more notes you open, the more milestones you unlock.
 
 ## Technologies Used
 - HTML5
