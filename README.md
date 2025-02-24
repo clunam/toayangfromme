@@ -40,7 +40,7 @@ Click on the jar to reveal different love notes. Each note is randomly picked fr
 - JavaScript (DOM Manipulation, LocalStorage, Event Listeners)
 
 ## License
-This project is for personal use and made with love, for me ini teh buat ayangku satusatunya yang ganteng di alam semesta ❤️ 
+This project is for personal use and made with love, ini teh buat ayangku satusatunya yang ganteng di alam semesta ❤️ 
 
 ---
 
