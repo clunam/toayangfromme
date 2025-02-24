@@ -6,7 +6,7 @@ const app = express();
 app.use(express.static(__dirname));
 
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'game.html'));
+  res.sendFile(path.join(__dirname, 'index.html'));
 });
 
 app.get('/messages.json', (req, res) => {
