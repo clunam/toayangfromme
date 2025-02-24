@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personalized Love Jar</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(to bottom, #1a0f13, #3b1e29);
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            transition: background 0.7s ease-in-out;
+        }
+
+        .container {
+            text-align: center;
+            position: relative;
+        }
+
+        @keyframes glow {
+            0% { text-shadow: 0 0 5px #8b1e34; }
+            50% { text-shadow: 0 0 15px #b33951, 0 0 20px #8b1e34; }
+            100% { text-shadow: 0 0 5px #8b1e34; }
+        }
+
+        @keyframes wave {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        @keyframes lidFlip {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+            100% { transform: translateY(-20px) rotate(10deg); }
+        }
+
+
+        .title {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 30px; /* Sedikit lebih besar untuk efek dramatis */
+            font-weight: bold;
+            color: #ffdde1; /* Warna soft pink untuk kontras */
+            text-align: center;
+            font-family: 'Pacifico', cursive;
+            line-height: 1.4;
+            z-index: 3;
+            transition: opacity 0.3s ease-in-out, text-shadow 0.3s ease-in-out;
+
+            /* Efek glowing halus */
+            text-shadow: 0 0 5px rgba(255, 221, 225, 0.8),
+                        0 0 10px rgba(255, 192, 203, 0.6),
+                        0 0 15px rgba(255, 160, 180, 0.4);
+
+            /* Animasi unik: efek shimmer + wave */
+            animation: waveGlow 3s infinite alternate, shimmer 2s infinite linear;
+        }
+
+        
+
+/* Hover: Tambahkan efek lebih dramatis */
+.title:hover {
+    text-shadow: 0 0 15px rgba(255, 221, 225, 1),
+                 0 0 25px rgba(255, 192, 203, 0.9),
+                 0 0 35px rgba(255, 160, 180, 0.7);
+    transform: translate(-50%, -50%) scale(1.1) rotate(0);
+}
+
+        .jar:hover .title {
+            opacity: 0;
+        }
+
+        .title.jar-open {
+            animation: glow 2s infinite alternate;
+            opacity: 0.5;
+        }
+
+        .jar {
+            width: 350px; /* Lebih besar dari sebelumnya */
+            height: 480px;
+            background: linear-gradient(to bottom, #2b171f, #4a2c38);
+            border: 8px solid #5c2d3b;
+            border-radius: 70px 70px 120px 120px;
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.2s, background 0.5s ease;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+            overflow: visible;
+        }
+
+
+        .jar::after {
+            content: "";
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            width: 200px;
+            height: 50px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 50%;
+            transform: translateX(-50%);
+            filter: blur(15px);
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0);
+            pointer-events: none;
+            transition: background 0.3s ease;
+            z-index: 1;
+        }
+
+        .jar:hover ~ body::before,
+        .container:hover::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .jar:hover {
+            transform: scale(1.08);
+            animation: jarGlow 1.5s infinite;
+            z-index: 2;
+        }
+
+        .lid {
+            z-index: 3;
+        }
+
+        .lid {
+            width: 354px; /* Sesuai ukuran jar baru */
+            height: 70px;
+            background: linear-gradient(to right, #3b1e29, #5c2d3b);
+            position: absolute;
+            top: -60px;
+            left: -10px;
+            border-radius: 20px 20px 0 0;
+            border: 8px solid #5c2d3b;
+            border-bottom: none;
+            transition: transform 0.3s ease-in-out;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.6);
+            z-index: 5;
+        }
+
+
+        .lid.open {
+            animation: lidFlip 0.5s ease-in-out forwards;
+        }
+
+        #closeNoteButton {
+            padding: 8px 14px;
+            background: rgba(75, 45, 55, 0.8); /* Lebih soft */
+            color: #e6b8c3;
+            font-size: 14px;
+            border: 2px solid rgba(179, 57, 81, 0.5);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+            position: fixed;
+            bottom: 60px; /* Naik sedikit */
+            left: 50%;
+            transform: translateX(-50%);
+            display: none;
+            z-index: 9999;
+            box-shadow: 0 0 5px rgba(179, 57, 81, 0.3); /* Shadow soft */
+        }
+
+        /* Hover: efek smooth tapi gak terlalu mencolok */
+        #closeNoteButton:hover {
+            background: rgba(90, 50, 65, 0.95);
+            box-shadow: 0 0 10px rgba(179, 57, 81, 0.5);
+            transform: translateX(-50%) scale(1.05);
+        }
+
+
+        .papers {
+            position: absolute;
+            top: 50px;
+            width: 100%;
+            height: 280px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            padding: 15px 0;
+            z-index: 10;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+            pointer-events: all;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .paper {
+            background: rgba(75, 45, 55, 0.9);
+            color: #e6b8c3;
+            font-size: 14px;
+            padding: 9px 12px;
+            border-radius: 5px;
+            margin: 0 25px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+            cursor: pointer;
+            transition: all 0.3s ease, background 0.3s ease;
+            text-align: center;
+            position: relative;
+            z-index: 15;
+        }
+
+        .paper:hover {
+            transform: translateY(-5px) scale(1.1);
+            background: rgba(90, 50, 65, 0.95);
+            box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.6);
+            z-index: 4;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 8;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        .overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .jar:hover .papers {
+            opacity: 1;
+        }
+
+        .note {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            background: linear-gradient(#4a2c38, #6b3d4d);
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 16px;
+            color: #e6b8c3;
+            text-align: center;
+            box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.7);
+            max-width: 80%;
+            transition: transform 0.3s ease-in-out;
+            border: 1px solid #8b1e34;
+            z-index: 10;
+        }
+
+        .note.show {
+    display: block;
+    transform: translate(-50%, -50%) scale(1.4); /* Lebih besar biar standout */
+    padding: 30px; /* Tambahkan padding biar lebih lega */
+    font-size: 22px; /* Perbesar teks supaya lebih jelas */
+    max-width: 95%;
+    width: 500px;
+    background: linear-gradient(to bottom, #8b1e34, #b33951); /* Warna lebih kontras */
+    color: #ffe6ea; /* Teks lebih terang untuk kontras */
+    border-radius: 15px;
+    text-align: center;
+    font-weight: bold;
+    border: 4px solid rgba(255, 100, 120, 0.8); /* Border neon */
+    box-shadow: 0 0 20px rgba(255, 100, 120, 0.8), 0 0 40px rgba(255, 100, 120, 0.6); /* Efek neon lebih intens */
+    animation: fadeIn 0.5s ease-out, glowPulse 1.5s infinite alternate;
+    transition: all 0.3s ease-in-out;
+}
+
+/* Animasi muncul */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1.4);
+    }
+}
+
+/* Efek glowing lebih kuat */
+@keyframes glowPulse {
+    0% {
+        box-shadow: 0 0 25px rgba(255, 100, 120, 0.8), 0 0 50px rgba(255, 100, 120, 0.6);
+    }
+    50% {
+        box-shadow: 0 0 35px rgba(255, 130, 150, 1), 0 0 55px rgba(255, 130, 150, 0.8);
+    }
+    100% {
+        box-shadow: 0 0 25px rgba(255, 100, 120, 0.8), 0 0 50px rgba(255, 100, 120, 0.6);
+    }
+}
+
+/* Efek hover */
+.note.show:hover {
+    transform: translate(-50%, -50%) scale(1.45);
+    box-shadow: 0 0 45px rgba(255, 130, 150, 1), 0 0 70px rgba(255, 130, 150, 0.9);
+}
+
+
+        .heart {
+            position: absolute;
+            font-size: 24px;
+            color: #8b1e34;
+            opacity: 0.8;
+            animation: floatUp 3s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        @keyframes floatUp {
+            0% { opacity: 1; transform: translateY(0); }
+            100% { opacity: 0; transform: translateY(-50px); }
+        }
+
+        @keyframes floatNearJar {
+            0% { opacity: 1; transform: translate(0, 0); }
+            50% { transform: translate(-10px, -20px); opacity: 0.8; }
+            100% { transform: translate(10px, -40px); opacity: 0; }
+        }
+
+        .theme-buttons {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .theme-buttons button {
+            padding: 5px 10px;
+            background: #5c2d3b;
+            color: #e6b8c3;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .theme-buttons button:hover {
+            background: #8b1e34;
+        }
+
+        @keyframes jarGlow {
+            0% { box-shadow: 0 5px 15px rgba(139, 30, 52, 0.3); }
+            50% { box-shadow: 0 5px 25px rgba(139, 30, 52, 0.8); }
+            100% { box-shadow: 0 5px 15px rgba(139, 30, 52, 0.3); }
+        }
+
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            50% { transform: translateX(5px); }
+            75% { transform: translateX(-5px); }
+            100% { transform: translateX(0); }
+        }
+
+        .jar.open {
+            animation: shake 0.3s ease;
+        }
+
+        /* CSS buat progress tracker */
+        .progress-tracker {
+            margin-top: 20px;
+            color: #e6b8c3;
+            font-family: 'Poppins', sans-serif;
+            text-align: center;
+        }
+
+        .progress-tracker p {
+            margin: 5px 0;
+            font-size: 14px;
+        }
+
+        .progress-tracker span {
+            font-weight: bold;
+            color: #b33951;
+        }
+
+        .milestone {
+            margin-top: 10px;
+            font-size: 16px;
+            color: #e6b8c3;
+            background: rgba(75, 45, 55, 0.9);
+            padding: 10px;
+            border-radius: 5px;
+            display: none;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        .milestone.show {
+            display: block;
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="overlay" id="overlay"></div>
+
+    <div class="container">
+        <div class="jar">
+            <div class="lid" id="lid"></div>
+            <h1 class="title" id="animatedTitle"></h1> 
+            <div class="papers">
+                <div class="paper" onclick="openJar('down')">open this when u're feeling sad :(</div>
+                <div class="paper" onclick="openJar('angry')">open this kalo u're mad @ me >:(</div>
+                <div class="paper" onclick="openJar('giveup')">open this when u're hopeless<br> n ngerasa pgn give up :'(</div>
+                <div class="paper" onclick="openJar('miss')">open this when u miss me :p</div>
+                <div class="paper" onclick="openJar('love')">open this when u need a smile :D</div>
+                <div class="paper" onclick="openJar('love')">open this when u need<br> a reminder that i love u <3</div>
+            </div>
+            <div class="note" id="loveNote"></div>
+            <audio id="hoverSound" src="assets/pop-39222.mp3"></audio>
+        </div>
+    
+        <button id="closeNoteButton" style="display: none;">Close Note</button>
+    
+        <div class="progress-tracker">
+            <p>Love Notes Opened Today: <span id="noteCountToday">0</span></p>
+            <p>Love Notes Opened in Total: <span id="noteCountTotal">0</span></p>
+            <div class="milestone" id="milestoneMessage"></div>
+        </div>
+    </div>
+
+    <script>
+        const text = "My Heart,\nin Jar.\n\nfor My Always:\nAyangku Cintaku ❦";
+        const titleElement = document.getElementById("animatedTitle");
+        let index = 0;
+
+        function typeEffect() {
+            if (index < text.length) {
+                titleElement.innerHTML += text[index] === "\n" ? "<br>" : text[index];
+                index++;
+                setTimeout(typeEffect, 100);
+            }
+        }
+
+        window.onload = typeEffect;
+
+        let messages = {};
+
+        // Ambil data dari messages.json
+        fetch("messages.json")
+            .then(response => response.json())
+            .then(data => {
+                messages = data;
+            })
+            .catch(error => console.error("Error loading messages:", error));
+
+        // Ambil data dari localStorage
+        let totalNotes = localStorage.getItem("totalNotes") ? parseInt(localStorage.getItem("totalNotes")) : 0;
+        let todayNotes = localStorage.getItem("todayNotes") ? parseInt(localStorage.getItem("todayNotes")) : 0;
+        let lastOpenedDate = localStorage.getItem("lastOpenedDate") || new Date().toDateString();
+
+        // Cek apakah hari baru, kalau iya reset counter hariannya
+        if (lastOpenedDate !== new Date().toDateString()) {
+            todayNotes = 0;
+            localStorage.setItem("todayNotes", todayNotes);
+            localStorage.setItem("lastOpenedDate", new Date().toDateString());
+        }
+
+        // Tampilkan count awal
+        document.getElementById("noteCountToday").textContent = todayNotes;
+        document.getElementById("noteCountTotal").textContent = totalNotes;
+        
+        document.addEventListener('click', function(event) {
+    const jar = document.querySelector('.jar');
+    const note = document.getElementById('loveNote');
+    const overlay = document.getElementById('overlay');
+    const lid = document.getElementById('lid');
+    const title = document.querySelector('.title');
+    const closeNoteButton = document.getElementById('closeNoteButton');
+
+    if (!jar.contains(event.target) && note.classList.contains('show')) {
+        note.classList.remove('show');
+        setTimeout(() => {
+            note.style.display = 'none';
+            lid.classList.remove('open');
+            title.classList.remove('jar-open');
+            overlay.classList.remove('active');
+            closeNoteButton.style.display = 'none';
+        }, 300);
+    }
+});
+
+function openJar(category) {
+    const title = document.querySelector('.title');
+    const note = document.getElementById('loveNote');
+    const lid = document.getElementById('lid');
+    const overlay = document.getElementById('overlay');
+    const jar = document.querySelector('.jar');
+    const closeNoteButton = document.getElementById('closeNoteButton');
+
+    // Animasi jar
+    jar.classList.add('open');
+    setTimeout(() => jar.classList.remove('open'), 300);
+
+    lid.classList.remove('open');
+    setTimeout(() => lid.classList.add('open'), 10);
+
+    title.classList.add('jar-open');
+    overlay.classList.add('active');
+
+    // Ambil pesan secara acak dari messages.json
+    if (messages[category] && messages[category].length > 0) {
+        const randomMessage = messages[category][Math.floor(Math.random() * messages[category].length)];
+        note.innerText = randomMessage;
+    } else {
+        note.innerText = 'No messages available.';
+    }
+
+    note.style.display = 'block';
+    setTimeout(() => note.classList.add('show'), 50);
+
+    for (let i = 15; i > 0; i--) {
+        setTimeout(createFloatingHeart, i * 200);
+    }
+
+    setTimeout(() => {
+        document.querySelectorAll('.heart').forEach(heart => heart.remove());
+    }, 3000);
+
+    // Update counter
+    todayNotes++;
+    totalNotes++;
+    localStorage.setItem('todayNotes', todayNotes);
+    localStorage.setItem('totalNotes', totalNotes);
+    document.getElementById('noteCountToday').textContent = todayNotes;
+    document.getElementById('noteCountTotal').textContent = totalNotes;
+
+    // Cek milestone
+    checkMilestone();
+
+    // Show close note button
+    closeNoteButton.style.display = 'block';
+}
+
+document.getElementById('closeNoteButton').addEventListener('click', function() {
+    const note = document.getElementById('loveNote');
+    const lid = document.getElementById('lid');
+    const title = document.querySelector('.title');
+    const overlay = document.getElementById('overlay');
+    const closeNoteButton = document.getElementById('closeNoteButton');
+
+    note.classList.remove('show');
+    setTimeout(() => {
+        note.style.display = 'none';
+        lid.classList.remove('open');
+        title.classList.remove('jar-open');
+        overlay.classList.remove('active');
+        closeNoteButton.style.display = 'none';
+    }, 300);
+});
+
+        function createFloatingHeart() {
+            const jar = document.querySelector(".jar");
+            const heart = document.createElement("div");
+            heart.classList.add("heart");
+            heart.innerHTML = "🤍";
+            document.body.appendChild(heart);
+
+            const jarRect = jar.getBoundingClientRect();
+            const x = jarRect.left + Math.random() * jarRect.width - 10;
+            const y = jarRect.top + Math.random() * 30 - 20;
+
+            heart.style.left = `${x}px`;
+            heart.style.top = `${y}px`;
+
+            const size = Math.random() * 15 + 15;
+            heart.style.fontSize = `${size}px`;
+
+            const duration = Math.random() * 1 + 1;
+            heart.style.animation = `floatNearJar ${duration}s ease-in-out`;
+            setTimeout(() => heart.remove(), duration * 1000);
+        }
+
+        function checkMilestone() {
+            const milestoneMessage = document.getElementById("milestoneMessage");
+            milestoneMessage.style.display = "none";
+
+            if (totalNotes === 10) {
+                milestoneMessage.textContent = "yay kamu udah buka 10 love notes! ❤️";
+            } else if (totalNotes === 50) {
+                milestoneMessage.textContent = "wowowow 50 love notes opened ai sayang1";
+            } else if (totalNotes === 100) {
+                milestoneMessage.textContent = "kereeennnnn u udah buka 100 love notes!!";
+            } else {
+                return;
+            }
+
+            milestoneMessage.style.display = "block";
+            setTimeout(() => {
+                milestoneMessage.style.display = "none";
+            }, 3000);
+        }
+
+    </script>
+
+
+
+
+</body>
+</html>
