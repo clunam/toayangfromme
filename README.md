@@ -6,7 +6,7 @@ Ayang, may this little piece of code remind you that I’m always here for you a
 ---
 
 ## About the Project
-**Personalized Love Jar** is an interactive digital jar filled with love notes. Designed with care and warmth dari me, this project lets my ayang open a jar and pick notes for different moods, whether you're feeling down, angry, missing someone, or simply need a reminder of love. 💖
+**Personalized Love Jar** is an interactive digital jar filled with love notes. Designed with care and warmth dari me, this project lets my ayang open a jar and pick notes for different moods, whether my ayang is feeling down, angry, missing someone, or simply need a reminder of love. 💖
 
 ### Features
 - 🎨 Beautiful animated jar with glowing effects
